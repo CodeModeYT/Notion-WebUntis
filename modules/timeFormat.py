@@ -17,11 +17,11 @@ def parseTime(time):
 
 def parseDate(date):
     date_mapping = {
-        "": "Montag",
-        "": "Dienstag",
-        "": "Mittwoch",
-        "": "Donnerstag",
-        "": "Freitag",
+        "Monday": "Montag",
+        "Tuesday": "Dienstag",
+        "Wednesday": "Mittwoch",
+        "Thursday": "Donnerstag",
+        "Friday": "Freitag",
     }
     
     return date_mapping.get(date)
