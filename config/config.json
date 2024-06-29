@@ -1,0 +1,13 @@
+{
+    "untis": {
+      "server": "",
+      "username": "",
+      "password": "",
+      "school": "",
+      "class_name": ""
+    },
+    "notion": {
+      "api_token": "",
+      "database_id": ""
+    }
+  }

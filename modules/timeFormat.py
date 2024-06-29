@@ -23,4 +23,5 @@ def parseDate(date):
         "": "Donnerstag",
         "": "Freitag",
     }
+    
     return date_mapping.get(date)

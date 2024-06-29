@@ -1,7 +1,16 @@
 import requests
+import json
 
-NOTION_TOKEN = ""
-DB_ID = ""
+with open('config\config.json') as config_file:
+    try:
+        config = json.load(config_file)
+        print("Config loaded successfully:")
+        print(config)
+    except json.JSONDecodeError as e:
+        print("Error loading config.json:", e)
+
+NOTION_TOKEN = config['notion']['api_token']
+DB_ID = config['notion']['database_id']
 
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,
