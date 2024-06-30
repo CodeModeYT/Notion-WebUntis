@@ -17,22 +17,27 @@ headers = {
     "Content-Type": "application/json",
     "Notion-Version": "2022-06-28",
 }
-
-def updatePage(page_id: str, property_name: str, new_content: str):
+def updatePage(page_id: str, property_name: str, new_content: str, annotations: dict = None):
     url = f"https://api.notion.com/v1/pages/{page_id}"
+    text_object = {
+        "type": "text",
+        "text": {
+            "content": new_content,
+        }
+    }
+
+    if annotations:
+        text_object["annotations"] = annotations
+
     payload = {
         "properties": {
             property_name: {
                 "rich_text": [
-                    {
-                        "type": "text",
-                        "text": {
-                            "content": new_content,
-                        }
-                    }
+                    text_object
                 ]
             }
         }
     }
+
     res = requests.patch(url, json=payload, headers=headers)
     return res

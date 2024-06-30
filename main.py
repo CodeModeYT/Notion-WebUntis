@@ -67,16 +67,48 @@ try:
         start_time = period.start.strftime('%H:%M')
         end_time = period.end.strftime('%H:%M')
         # Commas are added here so it doesn't look weird if one aspect is missing
-        subject = period.subjects[0].name+', ' if period.subjects else ''
-        teacher = period.teachers[0].name+', ' if period.teachers else ''
+        subject = period.subjects[0].name + ', ' if period.subjects and period.teachers else (period.subjects[0].name if period.subjects and not period.teachers else '')
+        teacher = period.teachers[0].name if period.teachers else ''
         room = ''
         
         try:
             if period.rooms:
-                room = period.rooms[0].name
+                # Comma is added here so it doesn't look weird if one aspect is missing
+                room = ', '+period.rooms[0].name
         except IndexError:
             room = ''
-            
+        
+        # Format subjects that are cancelled
+        if period.code == "cancelled":
+            print(f"PC: {period.code}")
+            page_id = parseTime(f"{start_time}-{end_time}")
+            property_name = parseDate(weekday)
+            new_content = f"{subject}{teacher}{room}"
+            annotations = {
+                "italic": True,
+                "strikethrough": True
+            }
+            response = updatePage(page_id, property_name, new_content, annotations)
+            print(response.status_code)
+            continue  
+
+        # Format periods that are irregular
+        if period.code == "irregular":
+            print(f"PC: {period.code}")
+            page_id = parseTime(f"{start_time}-{end_time}")
+            property_name = parseDate(weekday)
+            new_content = f"{subject}{teacher}{room}"
+            annotations = {
+                "bold": True
+            }
+            response = updatePage(page_id, property_name, new_content, annotations)
+            print(response.status_code)
+            continue 
+        
+        # Debugging:
+        if period.code:
+            print(f"PC: {period.code}")
+        
         page_id = parseTime(f"{start_time}-{end_time}")
         property_name = parseDate(weekday)
         new_content = f"{subject}{teacher}{room}"
