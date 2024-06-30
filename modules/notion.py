@@ -1,6 +1,7 @@
 import requests
 import json
 
+# Open the config file
 with open('config\config.json') as config_file:
     try:
         config = json.load(config_file)
@@ -9,14 +10,18 @@ with open('config\config.json') as config_file:
     except json.JSONDecodeError as e:
         print("Error loading config.json:", e)
 
+# Read the content file and declare the config variables
 NOTION_TOKEN = config['notion']['api_token']
 DB_ID = config['notion']['database_id']
 
+# Build the Notion API request
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,
     "Content-Type": "application/json",
     "Notion-Version": "2022-06-28",
 }
+
+
 def updatePage(page_id: str, property_name: str, new_content: str, annotations: dict = None):
     url = f"https://api.notion.com/v1/pages/{page_id}"
     text_object = {

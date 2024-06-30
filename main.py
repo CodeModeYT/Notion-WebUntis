@@ -18,7 +18,8 @@ with open('config/config.json') as config_file:
     except json.JSONDecodeError as e:
         print("Error loading config.json:", e)
         exit(1)
-# Load (whitelisted) subjects
+        
+# Load the (whitelisted) subjects
 with open('config/subjects.json') as subjects_file:
     try:
         subjects = json.load(subjects_file)
@@ -37,6 +38,7 @@ s = webuntis.Session(
 )
 
 try:
+    # Log into the WebUntis Session
     s.login()
     print("Login successful.")
     
@@ -62,18 +64,20 @@ try:
         whitelist_subjects = subjects['subjects']
         if any(subj.name not in whitelist_subjects for subj in period.subjects):
             continue
-
+        
+        # Format the time given by WebUntis
         weekday = period.start.strftime('%A')
         start_time = period.start.strftime('%H:%M')
         end_time = period.end.strftime('%H:%M')
-        # Commas are added here so it doesn't look weird if one aspect is missing
+        
+        # Format the API responses for use in the database
+        # (Commas are added here so it doesn't look weird if one aspect is missing)
         subject = period.subjects[0].name + ', ' if period.subjects and period.teachers else (period.subjects[0].name if period.subjects and not period.teachers else '')
         teacher = period.teachers[0].name if period.teachers else ''
         room = ''
-        
         try:
             if period.rooms:
-                # Comma is added here so it doesn't look weird if one aspect is missing
+                # (Comma is added here so it doesn't look weird if one aspect is missing)
                 room = ', '+period.rooms[0].name
         except IndexError:
             room = ''
@@ -88,6 +92,7 @@ try:
                 "italic": True,
                 "strikethrough": True
             }
+            # Send the data to the Notion API
             response = updatePage(page_id, property_name, new_content, annotations)
             print(response.status_code)
             continue  
@@ -101,28 +106,21 @@ try:
             annotations = {
                 "bold": True
             }
+            # Send the data to the Notion API
             response = updatePage(page_id, property_name, new_content, annotations)
             print(response.status_code)
             continue 
         
-        # Debugging:
-        if period.code:
-            print(f"PC: {period.code}")
-        
+        # Find the correct cell in the database to enter the data into
         page_id = parseTime(f"{start_time}-{end_time}")
         property_name = parseDate(weekday)
         new_content = f"{subject}{teacher}{room}"
 
+        # Send the data to the Notion API
         response = updatePage(page_id, property_name, new_content)
         print(response.status_code)
-        
-        print(f"{weekday}")
-        print(f"Period: {start_time} - {end_time}")
-        print(f"  Subject: {subject}")
-        print(f"  Teacher: {teacher}")
-        print(f"  Room: {room}")
-        print("")
 
+# After everything is done: log out of the WebUntis Session
 finally:
     s.logout()
     print("Logged out successfully.")

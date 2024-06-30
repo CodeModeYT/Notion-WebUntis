@@ -1,3 +1,4 @@
+# Convert the times into the corresponding Notion Databse row IDs
 def parseTime(time):
     time_mapping = {
         "07:45-08:30": "3a051125-1484-41a0-8367-cc1673ed0ba4",
@@ -15,6 +16,7 @@ def parseTime(time):
     
     return time_mapping.get(time)
 
+# Convert the weekdays into the corresponding Notion Databse property name
 def parseDate(date):
     date_mapping = {
         "Monday": "Montag",
