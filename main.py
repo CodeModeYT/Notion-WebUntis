@@ -58,7 +58,7 @@ try:
         print(f"Error fetching timetable: {e}")
         exit(1)
 
-    # Print the timetable details
+    # Loop through all the periods
     for period in timetable:
         # Skip subjects that are not whitelisted
         whitelist_subjects = subjects['subjects']
