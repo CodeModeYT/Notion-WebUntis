@@ -1,5 +1,7 @@
-<img src="imgs/Notion_app_logo.png" height="40px" style="margin-right: 20px">
-<img src="imgs/WebUntis-Logo.png" width="auto" height="40px">
+<p align="left">
+    <img src="imgs/Notion_app_logo.png" height="40px" style="margin-right: 20px"/>
+    <img src="imgs/WebUntis-Logo.png" width="auto" height="40px"/>
+</p>
 
 # Notion-WebUntis
 Easily integrate your WebUntis timetable into your Notion Baords!
