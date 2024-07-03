@@ -26,6 +26,6 @@ After completing the steps listed in [Setup](#setup), simply run `main.py` and w
 
 ## Error handling:
 If the Notion API returns status codes other than `200` (like most common: `400`), it is most likely caused by  the configuration in `timeFormat.py` being wrong.
-Double check that the Day- and Time mapping is matching with the databse in your Notion board; especially concerning the row IDs for the class times. 
+Double check that the Day- and Time mapping is matching with the databse in your Notion board; especially concerning row IDs and property names. 
 
 
