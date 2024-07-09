@@ -1,1 +1,1 @@
-requests, webuntis
+requests, webuntis, tqdm, colorama

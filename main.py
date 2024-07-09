@@ -4,6 +4,11 @@ from webuntis.errors import *
 from datetime import datetime, timedelta
 from modules.timeFormat import parseTime, parseDate
 from modules.notion import updatePage
+from tqdm import tqdm
+from colorama import Fore, Style, init
+
+# Initialize colorama
+init()
 
 # Calculate the date range for the current week (Monday to Friday)
 today = datetime.now()
@@ -14,18 +19,18 @@ friday = monday + timedelta(days=4)
 with open('config/config.json') as config_file:
     try:
         config = json.load(config_file)
-        print("Config loaded successfully")
+        tqdm.write("Config loaded successfully")
     except json.JSONDecodeError as e:
-        print("Error loading config.json:", e)
+        tqdm.write(f"Error loading config.json: {e}")
         exit(1)
         
 # Load the (whitelisted) subjects
 with open('config/subjects.json') as subjects_file:
     try:
         subjects = json.load(subjects_file)
-        print("Subjects loaded successfully")
+        tqdm.write("Subjects loaded successfully")
     except json.JSONDecodeError as e:
-        print("Error loading subjects.json:", e)
+        tqdm.write(f"Error loading subjects.json: {e}")
         exit(1)
 
 # Create a session and login
@@ -40,26 +45,27 @@ s = webuntis.Session(
 try:
     # Log into the WebUntis Session
     s.login()
-    print("Login successful.")
+    tqdm.write("Login successful.")
     
     # Fetch the class object
     try:
         klasse = s.klassen().filter(name=config['untis']['class_name'])[0]
-        print(f"Class '{config['untis']['class_name']}' found.")
+        tqdm.write(f"Class '{config['untis']['class_name']}' found.")
     except IndexError:
-        print(f"Error: Class '{config['untis']['class_name']}' not found.")
+        tqdm.write(f"Error: Class '{config['untis']['class_name']}' not found.")
         exit(1)
 
     # Fetch the timetable for the current week
     try:
         timetable = s.timetable(klasse=klasse, start=monday, end=friday)
-        print("Timetable fetched successfully.")
+        tqdm.write("Timetable fetched successfully.")
     except Exception as e:
-        print(f"Error fetching timetable: {e}")
+        tqdm.write(f"Error fetching timetable: {e}")
         exit(1)
 
-    # Loop through all the periods
-    for period in timetable:
+    # Loop through all the periods and displaying a progress bar
+    for period in tqdm(timetable, desc=f"{Fore.BLUE}Updating periods{Style.RESET_ALL}", unit="period", bar_format="{l_bar}{bar}{r_bar}"):
+
         # Skip subjects that are not whitelisted
         whitelist_subjects = subjects['subjects']
         if any(subj.name not in whitelist_subjects for subj in period.subjects):
@@ -84,7 +90,7 @@ try:
         
         # Format subjects that are cancelled
         if period.code == "cancelled":
-            print(f"PC: {period.code}")
+            tqdm.write(f"PC: {period.code}")
             page_id = parseTime(f"{start_time}-{end_time}")
             property_name = parseDate(weekday)
             new_content = f"{subject}{teacher}{room}"
@@ -94,12 +100,12 @@ try:
             }
             # Send the data to the Notion API
             response = updatePage(page_id, property_name, new_content, annotations)
-            print(response.status_code)
+            tqdm.write(str(response.status_code))
             continue  
 
         # Format periods that are irregular
         if period.code == "irregular":
-            print(f"PC: {period.code}")
+            tqdm.write(f"PC: {period.code}")
             page_id = parseTime(f"{start_time}-{end_time}")
             property_name = parseDate(weekday)
             new_content = f"{subject}{teacher}{room}"
@@ -108,7 +114,7 @@ try:
             }
             # Send the data to the Notion API
             response = updatePage(page_id, property_name, new_content, annotations)
-            print(response.status_code)
+            tqdm.write(str(response.status_code))
             continue 
         
         # Find the correct cell in the database to enter the data into
@@ -118,9 +124,10 @@ try:
 
         # Send the data to the Notion API
         response = updatePage(page_id, property_name, new_content)
-        print(response.status_code)
+        tqdm.write(str(response.status_code))
 
 # After everything is done: log out of the WebUntis Session
 finally:
     s.logout()
-    print("Logged out successfully.")
+    tqdm.write(f"{Fore.GREEN}Timetable updated successfully.{Style.RESET_ALL}")
+    tqdm.write(f"{Fore.GREEN}Last updated:{Style.RESET_ALL} {datetime.now()}")
