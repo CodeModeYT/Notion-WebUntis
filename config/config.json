@@ -8,6 +8,7 @@
     },
     "notion": {
       "api_token": "",
-      "database_id": ""
+      "database_id": "",
+      "la_block_id": ""
     }
   }

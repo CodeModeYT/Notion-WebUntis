@@ -46,3 +46,26 @@ def updatePage(page_id: str, property_name: str, new_content: str, annotations: 
 
     res = requests.patch(url, json=payload, headers=headers)
     return res
+
+def updateParagraph(id, content):
+    url = f"https://api.notion.com/v1/blocks/{id}"
+    
+    payload = {
+        "paragraph": {
+            "rich_text": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": content
+                    }
+                }
+            ]
+        }
+    }
+    response = requests.patch(url, headers=headers, data=json.dumps(payload))
+    
+    if response.status_code == 200:
+        exit
+    else:
+        print("Failed to update text:")
+        print(response.json())

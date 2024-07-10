@@ -1,3 +1,4 @@
+# You can use this script to retrieve the Database ID of the database the timetable should be entered into
 import requests
 import json
 

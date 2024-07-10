@@ -3,7 +3,7 @@ import webuntis
 from webuntis.errors import *
 from datetime import datetime, timedelta
 from modules.timeFormat import parseTime, parseDate
-from modules.notion import updatePage
+from modules.notion import updatePage, updateParagraph
 from tqdm import tqdm
 from colorama import Fore, Style, init
 
@@ -129,5 +129,6 @@ try:
 # After everything is done: log out of the WebUntis Session
 finally:
     s.logout()
+    updateParagraph(config['notion']['la_block_id'], f"Zuletzt aktualisiert: {datetime.now().strftime("%d %b %Y %H:%M")}")
     tqdm.write(f"{Fore.GREEN}Timetable updated successfully.{Style.RESET_ALL}")
     tqdm.write(f"{Fore.GREEN}Last updated:{Style.RESET_ALL} {datetime.now()}")

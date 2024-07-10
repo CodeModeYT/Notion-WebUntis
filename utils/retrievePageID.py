@@ -1,3 +1,4 @@
+# You can use this script to retrieve the Page ID of the certain Notion page where you want the timetable to be located
 import requests
 import json
 
