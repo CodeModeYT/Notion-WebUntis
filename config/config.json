@@ -9,6 +9,6 @@
     "notion": {
       "api_token": "",
       "database_id": "",
-      "la_block_id": ""
+      "status_block_id": ""
     }
   }
