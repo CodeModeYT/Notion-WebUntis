@@ -9,6 +9,7 @@
     "notion": {
       "api_token": "",
       "database_id": "",
-      "status_block_id": ""
+      "status_block_id": "",
+      "update_checkbox_id":""
     }
   }

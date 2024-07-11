@@ -69,3 +69,29 @@ def updateParagraph(id, content):
     else:
         print("Failed to update text:")
         print(response.json())
+        
+def get_checkbox_status(block_id):
+    url = f"https://api.notion.com/v1/blocks/{block_id}"
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        block = response.json()
+        if block["type"] == "to_do":
+            return block["to_do"]["checked"]
+        else:
+            raise Exception("The block is not a to_do block with a checkbox.")
+    else:
+        raise Exception(f"Failed to retrieve block: {response.status_code}, {response.text}")
+
+def update_checkbox_status(block_id, checked):
+    url = f"https://api.notion.com/v1/blocks/{block_id}"
+    data = {
+        "to_do": {
+            "checked": checked
+        }
+    }
+    response = requests.patch(url, headers=headers, data=json.dumps(data))
+    if response.status_code == 200:
+        exit
+    else:
+        print(f"Failed to update checkbox status: {response.status_code}")
+        print(response.json())
