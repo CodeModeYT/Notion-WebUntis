@@ -11,8 +11,8 @@ with open('config\config.json') as config_file:
         print("Error loading config.json:", e)
 
 # Read the content file and declare the config variables
-NOTION_TOKEN = config['notion']['api_token']
-DB_ID = config['notion']['database_id']
+NOTION_TOKEN = config['notion_api']['api_token']
+DB_ID = config['notion_api']['database_id']
 
 # Build the Notion API request
 headers = {

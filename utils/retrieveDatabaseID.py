@@ -10,8 +10,8 @@ with open('config\config.json') as config_file:
     except json.JSONDecodeError as e:
         print("Error loading config.json:", e)
 
-NOTION_TOKEN = config['notion']['api_token']
-DB_ID = config['notion']['database_id']
+NOTION_TOKEN = config['notion_api']['api_token']
+DB_ID = config['notion_api']['database_id']
 
 headers = {
     "Authorization": "Bearer " + NOTION_TOKEN,

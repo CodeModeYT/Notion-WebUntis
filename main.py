@@ -66,12 +66,12 @@ def main():
             tqdm.write(f"Error fetching timetable: {e}")
             exit(1)
 
-        updateParagraph(config['notion']['status_block_id'], f"Status: Aktualisierung gestartet...")
+        updateParagraph(config['notion_page']['status_block_id'], f"Status: Aktualisierung gestartet...")
         # Loop through all the periods and displaying a progress bar
         progr = tqdm(timetable, desc=f"{Fore.BLUE}Updating periods{Style.RESET_ALL}", unit="period", bar_format="{l_bar}{bar}{r_bar}")
         for period in progr:
             # Display the progress in Notion too
-            updateParagraph(config['notion']['status_block_id'], f"Status: wird aktualisiert... ({progr.n}/{progr.total})")
+            updateParagraph(config['notion_page']['status_block_id'], f"Status: wird aktualisiert... ({progr.n}/{progr.total})")
             
             # Skip subjects that are not whitelisted
             whitelist_subjects = subjects['subjects']
@@ -136,15 +136,15 @@ def main():
     # After everything is done: log out of the WebUntis Session
     finally:
         s.logout()
-        updateParagraph(config['notion']['status_block_id'], f"Zuletzt aktualisiert: {datetime.now().strftime("%d %b %Y %H:%M")}")
-        update_checkbox_status(config['notion']['update_checkbox_id'], False)
+        updateParagraph(config['notion_page']['status_block_id'], f"Zuletzt aktualisiert: {datetime.now().strftime("%d %b %Y %H:%M")}")
+        update_checkbox_status(config['notion_page']['update_checkbox_id'], False)
         tqdm.write(f"{Fore.GREEN}Timetable updated successfully.{Style.RESET_ALL}")
         tqdm.write(f"{Fore.GREEN}Last updated:{Style.RESET_ALL} {datetime.now()}")
         
         
 def interval():
     # If the checkbox is checked
-    if get_checkbox_status(config['notion']['update_checkbox_id']):
+    if get_checkbox_status(config['notion_page']['update_checkbox_id']):
         main()
     else:
         exit

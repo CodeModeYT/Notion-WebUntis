@@ -5,6 +5,7 @@ from webuntis.errors import *
 from datetime import datetime, timedelta
 from modules.timeFormat import parseTime, parseDate
 from modules.notion import updatePage, updateParagraph
+from modules.settings import toggleSettingDisplay
 from tqdm import tqdm
 from colorama import Fore, Style, init
 
@@ -43,6 +44,10 @@ s = webuntis.Session(
     useragent='Notion-WebUntis'
 )
 
+# Make sure the settings are set correctly
+toggleSettingDisplay()
+print("Settings toggled")
+
 try:
     # Log into the WebUntis Session
     s.login()
@@ -64,12 +69,12 @@ try:
         tqdm.write(f"Error fetching timetable: {e}")
         exit(1)
 
-    updateParagraph(config['notion']['status_block_id'], f"Status: Aktualisierung gestartet...")
+    updateParagraph(config['notion_page']['status_block_id'], f"Status: Aktualisierung gestartet...")
     # Loop through all the periods and displaying a progress bar
     progr = tqdm(timetable, desc=f"{Fore.BLUE}Updating periods{Style.RESET_ALL}", unit="period", bar_format="{l_bar}{bar}{r_bar}")
     for period in progr:
         # Display the progress in Notion too
-        updateParagraph(config['notion']['status_block_id'], f"Status: aktualisiert... ({progr.n}/{progr.total})")
+        updateParagraph(config['notion_page']['status_block_id'], f"Status: aktualisiert... ({progr.n}/{progr.total})")
         
         # Skip subjects that are not whitelisted
         whitelist_subjects = subjects['subjects']
@@ -134,6 +139,6 @@ try:
 # After everything is done: log out of the WebUntis Session
 finally:
     s.logout()
-    updateParagraph(config['notion']['status_block_id'], f"Zuletzt aktualisiert: {datetime.now().strftime("%d %b %Y %H:%M")}")
+    updateParagraph(config['notion_page']['status_block_id'], f"Zuletzt aktualisiert: {datetime.now().strftime("%d %b %Y %H:%M")}")
     tqdm.write(f"{Fore.GREEN}Timetable updated successfully.{Style.RESET_ALL}")
     tqdm.write(f"{Fore.GREEN}Last updated:{Style.RESET_ALL} {datetime.now()}")

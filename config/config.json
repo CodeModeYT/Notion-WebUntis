@@ -6,10 +6,15 @@
       "school": "",
       "class_name": ""
     },
-    "notion": {
+    "notion_api": {
       "api_token": "",
-      "database_id": "",
+      "database_id": ""
+    },
+    "notion_page": {
       "status_block_id": "",
-      "update_checkbox_id":""
+      "update_checkbox_id":"",
+      "settings_onlynoncanc_cb_id": "",
+      "settings_onlycanc_cb_id": ""
+      
     }
   }
