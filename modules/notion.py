@@ -47,6 +47,26 @@ def updatePage(page_id: str, property_name: str, new_content: str, annotations: 
     res = requests.patch(url, json=payload, headers=headers)
     return res
 
+def clearPage(page_id: str, property_name: str):
+    url = f"https://api.notion.com/v1/pages/{page_id}"
+    text_object = {
+        "type": "text",
+        "text": {
+            "content": "",
+        }
+    }
+    payload = {
+        "properties": {
+            property_name: {
+                "rich_text": [
+                    text_object
+                ]
+            }
+        }
+    }
+    res = requests.patch(url, json=payload, headers=headers)
+    return res
+
 def updateParagraph(id, content):
     url = f"https://api.notion.com/v1/blocks/{id}"
     

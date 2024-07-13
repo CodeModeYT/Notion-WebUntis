@@ -4,7 +4,7 @@ import webuntis
 from webuntis.errors import *
 from datetime import datetime, timedelta
 from modules.timeFormat import parseTime, parseDate
-from modules.notion import updatePage, updateParagraph
+from modules.notion import updatePage, updateParagraph, get_checkbox_status, clearPage
 from modules.settings import toggleSettingDisplay
 from tqdm import tqdm
 from colorama import Fore, Style, init
@@ -46,7 +46,7 @@ s = webuntis.Session(
 
 # Make sure the settings are set correctly
 toggleSettingDisplay()
-print("Settings toggled")
+tqdm.write("Settings toggled")
 
 try:
     # Log into the WebUntis Session
@@ -74,7 +74,7 @@ try:
     progr = tqdm(timetable, desc=f"{Fore.BLUE}Updating periods{Style.RESET_ALL}", unit="period", bar_format="{l_bar}{bar}{r_bar}")
     for period in progr:
         # Display the progress in Notion too
-        updateParagraph(config['notion_page']['status_block_id'], f"Status: aktualisiert... ({progr.n}/{progr.total})")
+        updateParagraph(config['notion_page']['status_block_id'], f"Status: wird aktualisiert... ({progr.n}/{progr.total})")
         
         # Skip subjects that are not whitelisted
         whitelist_subjects = subjects['subjects']
@@ -98,35 +98,81 @@ try:
         except IndexError:
             room = ''
         
-        # Format subjects that are cancelled
-        if period.code == "cancelled":
-            tqdm.write(f"PC: {period.code}")
-            page_id = parseTime(f"{start_time}-{end_time}")
-            property_name = parseDate(weekday)
-            new_content = f"{subject}{teacher}{room}"
-            annotations = {
-                "italic": True,
-                "strikethrough": True
-            }
-            # Send the data to the Notion API
-            response = updatePage(page_id, property_name, new_content, annotations)
-            tqdm.write(str(response.status_code))
-            continue  
-
-        # Format periods that are irregular
-        if period.code == "irregular":
-            tqdm.write(f"PC: {period.code}")
-            page_id = parseTime(f"{start_time}-{end_time}")
-            property_name = parseDate(weekday)
-            new_content = f"{subject}{teacher}{room}"
-            annotations = {
-                "bold": True
-            }
-            # Send the data to the Notion API
-            response = updatePage(page_id, property_name, new_content, annotations)
-            tqdm.write(str(response.status_code))
-            continue 
+        only_show_non_cancelled_periods = get_checkbox_status(config['notion_page']['settings_onlynoncanc_cb_id'])
+        only_show_cancelled_periods = get_checkbox_status(config['notion_page']['settings_onlycanc_cb_id'])
         
+        # Apply the settings
+        if only_show_non_cancelled_periods:
+            if period.code == "cancelled":
+                tqdm.write(f"PC: {period.code}")
+                page_id = parseTime(f"{start_time}-{end_time}")
+                property_name = parseDate(weekday)
+                new_content = ""
+                response = updatePage(page_id, property_name, new_content)
+                tqdm.write(str(response.status_code))
+                continue
+            if period.code != "cancelled":
+                page_id = parseTime(f"{start_time}-{end_time}")
+                property_name = parseDate(weekday)
+                new_content = f"{subject}{teacher}{room}"
+                # Send the data to the Notion API
+                response = updatePage(page_id, property_name, new_content)
+                tqdm.write(str(response.status_code))
+                continue  
+
+        if only_show_cancelled_periods:
+            if period.code == "cancelled":
+                tqdm.write(f"PC: {period.code}")
+                page_id = parseTime(f"{start_time}-{end_time}")
+                property_name = parseDate(weekday)
+                new_content = f"{subject}{teacher}{room}"
+                annotations = {
+                    "italic": True,
+                    "strikethrough": True
+                }
+                # Send the data to the Notion API
+                response = updatePage(page_id, property_name, new_content, annotations)
+                tqdm.write(str(response.status_code))
+                continue  
+            if period.code != "cancelled":
+                tqdm.write(f"PC: {period.code}")
+                page_id = parseTime(f"{start_time}-{end_time}")
+                property_name = parseDate(weekday)
+                new_content = ""
+                response = updatePage(page_id, property_name, new_content)
+                tqdm.write(str(response.status_code))
+                continue
+            
+        else:
+            # Format subjects that are cancelled
+            if period.code == "cancelled":
+                tqdm.write(f"PC: {period.code}")
+                page_id = parseTime(f"{start_time}-{end_time}")
+                property_name = parseDate(weekday)
+                new_content = f"{subject}{teacher}{room}"
+                annotations = {
+                    "italic": True,
+                    "strikethrough": True
+                }
+                # Send the data to the Notion API
+                response = updatePage(page_id, property_name, new_content, annotations)
+                tqdm.write(str(response.status_code))
+                continue  
+
+            # Format periods that are irregular
+            if period.code == "irregular":
+                tqdm.write(f"PC: {period.code}")
+                page_id = parseTime(f"{start_time}-{end_time}")
+                property_name = parseDate(weekday)
+                new_content = f"{subject}{teacher}{room}"
+                annotations = {
+                    "bold": True
+                }
+                # Send the data to the Notion API
+                response = updatePage(page_id, property_name, new_content, annotations)
+                tqdm.write(str(response.status_code))
+                continue 
+            
         # Find the correct cell in the database to enter the data into
         page_id = parseTime(f"{start_time}-{end_time}")
         property_name = parseDate(weekday)
