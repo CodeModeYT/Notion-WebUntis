@@ -11,11 +11,14 @@ Easily integrate your WebUntis timetable into your Notion Baords!
 ### 1.1 Workspace setup:
 1. Clone / Download this repository and navigate to the directory
 2. Install the dependencies using pip: `pip install -r requirements.txt`
-### 1.2 Notion setup:
+### 1.2 Notion setup
+#### 1.2.1 Notion API Setup
 1. Create a new [Notion integration](https://www.notion.so/my-integrations)
 2. Copy the API token into the `config.json` file
 3. Duplicate the [Notion template](https://outstanding-airmail-bed.notion.site/Notion-WebUntis-3429155c2d0f4fb4a2432db400eef4e9) into your own Notion board
 4. Copy the [Database ID](https://developers.notion.com/reference/retrieve-a-database) (of the database in *your* Notion board) into the `config.json` file
+#### 1.2.2 Notion Block Setup
+Use the tools provided in /utils/ to retrieve the IDs
 
 *If you modify the structure of the database template, ensure that corresponding changes are made in `timeFormat.py`!*
 
