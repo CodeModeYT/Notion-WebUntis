@@ -1,12 +1,11 @@
 import requests
 import json
-
+from tqdm import tqdm
 # Open the config file
 with open('config\config.json') as config_file:
     try:
         config = json.load(config_file)
         print("Config loaded successfully:")
-        print(config)
     except json.JSONDecodeError as e:
         print("Error loading config.json:", e)
 
@@ -67,6 +66,36 @@ def clearPage(page_id: str, property_name: str):
     res = requests.patch(url, json=payload, headers=headers)
     return res
 
+# def updateParagraph(id, content, annotations: dict = None):
+#     url = f"https://api.notion.com/v1/blocks/{id}"
+    
+#     rich_text_object = {
+#         "type": "text",
+#         "text": {
+#             "content": content
+#         }
+#     }
+    
+#     if annotations:
+#         rich_text_object["annotations"] = annotations
+    
+#     payload = {
+#         "paragraph": {
+#             "rich_text": [
+#                 rich_text_object
+#             ]
+#         }
+#     }
+    
+#     try:
+#         # Send the data to Notion API and get the response
+#         response = requests.post(url, headers=headers, json=payload)
+#         tqdm.write(json.dumps(response.json()))  # Convert response to JSON string before writing
+#         return response
+#     except Exception as e:
+#         tqdm.write(f"Failed to update paragraph: {e}")  # Handle exceptions gracefully
+#         return None
+
 def updateParagraph(id, content):
     url = f"https://api.notion.com/v1/blocks/{id}"
     
@@ -89,7 +118,8 @@ def updateParagraph(id, content):
     else:
         print("Failed to update text:")
         print(response.json())
-        
+
+
 def get_checkbox_status(block_id):
     url = f"https://api.notion.com/v1/blocks/{block_id}"
     response = requests.get(url, headers=headers)
@@ -115,3 +145,26 @@ def update_checkbox_status(block_id, checked):
     else:
         print(f"Failed to update checkbox status: {response.status_code}")
         print(response.json())
+
+def clearParagraph(id):
+    url = f"https://api.notion.com/v1/blocks/{id}"
+    rich_text_object = {
+        "type": "text",
+        "text": {
+            "content": ""
+        }
+    }
+    payload = {
+        "paragraph": {
+            "rich_text": [
+                rich_text_object
+            ]
+        }
+    }
+    response = requests.patch(url, headers=headers, json=payload)
+    
+    if response.status_code == 200:
+        tqdm.write("Paragraph cleared successfully.")
+    else:
+        tqdm.write("Failed to clear paragraph:")
+        tqdm.write(response.json())
