@@ -18,7 +18,7 @@ Easily integrate your WebUntis timetable into your Notion Baords!
 3. Duplicate the [Notion template](https://outstanding-airmail-bed.notion.site/Notion-WebUntis-3429155c2d0f4fb4a2432db400eef4e9) into your own Notion board
 4. Copy the [Database ID](https://developers.notion.com/reference/retrieve-a-database) (of the database in *your* Notion board) into the `config.json` file
 #### 1.2.2 Notion Block Setup
-Use the tools provided in /utils/ to retrieve the IDs
+Use the tools provided in /utils/ to retrieve the Block snd Row IDs and enter them in config.json
 
 *If you modify the structure of the database template, ensure that corresponding changes are made in `timeFormat.py`!*
 
