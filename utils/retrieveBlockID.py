@@ -1,4 +1,4 @@
-# You can use this script to retrieve the BlockID of the Block where the 'Last Updated' time should be displayed
+# You can use this script to retrieve the Block IDs you need to enter in the "notion_page" section of config.json
 import requests
 
 NOTION_API_KEY = ''
