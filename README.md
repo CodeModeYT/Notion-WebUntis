@@ -45,4 +45,8 @@ After completing the steps listed in [Setup](#setup), you have two options:
 If the Notion API returns status codes other than `200` (like most common: `400`), it is most likely caused by  the configuration in `timeFormat.py` being wrong.
 Double check that the Day- and Time mapping is matching with the databse in your Notion board; especially concerning row IDs and property names. 
 
-
+## 3. Development / Contributing
+### 3.1 Development:
+Development is currently on hold. As there is now schoollyear ongoing at the moment, I have no way to test changes.
+### 3.2 Contributing:
+Contributions are welcome. Please create an issue discussing what you want to change first. Once you have my approval, fork this repository and submit a pull request with your changes.
