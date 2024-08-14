@@ -23,7 +23,7 @@ Use the tools provided in `/utils/` to retrieve the Block and Row IDs and enter 
 *If you modify the structure of the database template, ensure that corresponding changes are made in `timeFormat.py`!*
 
 ### 1.3 WebUntis API setup:
-1. Find out what WebUntis Server your school is running on (e.g. herakles). Then copy the URL in the `config.json` file in the following format: `SERVER.webuntis.com`
+1. Find out what WebUntis Server your school is running on (e.g. herakles). You can do that by logging into WebUntis on the website *(not the App!)* and looking at the subdomain (e.g. *herakles* .webuntis.com). Then copy the URL in the `config.json` file in the following format: `SERVER.webuntis.com`
 
     You can do this by logging into your WebUntis account on the [WebUntis Website](https://webuntis.com/) and checking the URL
 2. Enter your WebUntis credentials and school- and class name into `config.json`
