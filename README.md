@@ -5,6 +5,7 @@
 
 # Notion-WebUntis
 Easily integrate your WebUntis timetable into your Notion Baords!
+(see an example [here](#5-live-example))
 
 ## 1. Setup:
 
@@ -31,6 +32,8 @@ Use the tools provided in `/utils/` to retrieve the Block and Row IDs and enter 
 4. Adjust `timeFormat.py` to match the class times at your school
 
 *You might need to speak with your schools IT department first to get the rights to use the API!*
+
+
 ## 2. Usage:
 After completing the steps listed in [Setup](#setup), you have two options:
 
@@ -41,12 +44,28 @@ After completing the steps listed in [Setup](#setup), you have two options:
 
 *Please note that I am not responsible for any damage caused by (parts of) this project.*
 
+
 ## 3. Error handling:
 If the Notion API returns status codes other than `200` (like most common: `400`), it is most likely caused by  the configuration in `timeFormat.py` being wrong.
 Double check that the Day- and Time mapping is matching with the databse in your Notion board; especially concerning row IDs and property names. 
 
-## 3. Development / Contributing
-### 3.1 Development:
-Development is currently on hold. As there is now schoollyear ongoing at the moment, I have no way to test changes.
-### 3.2 Contributing:
+
+## 4. Development / Contributing
+### 4.1 Development:
+Development is currently on hold. As there is no schoollyear ongoing at the moment, I have no way to test changes.
+### 4.2 Contributing:
 Contributions are welcome. Please create an issue discussing what you want to change first. Once you have my approval, fork this repository and submit a pull request with your changes.
+
+
+## 5. Live example
+### 5.1 Example Notion page:
+If you want to view the Notion page live, you can take a loook at the template [here](https://outstanding-airmail-bed.notion.site/Notion-WebUntis-3429155c2d0f4fb4a2432db400eef4e9)
+### 5.2 CLI example:
+Unfortunately I can't provide an example of the command line interface at the moment, as there is no school year ongoing.
+I will add one as soon as I have the chance to.
+### 5.3 Example screenshots of the Notion page:
+The Notion database with the timetable. Format: Teacher, Subject, Room
+<img src="imgs/screenshot_timetable.png" width="auto" height="500px"/>
+<img src="imgs/screenshot_settings.png" width="auto" height="200px"/>
+
+The available settings that are changeable directly in Notion
