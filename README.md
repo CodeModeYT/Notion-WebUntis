@@ -1,6 +1,6 @@
 <p align="left">
-    <img src="imgs/Notion_app_logo.png" height="40px" style="margin-right: 20px"/>
-    <img src="imgs/WebUntis-Logo.png" width="auto" height="40px"/>
+    <img src="imgs/Notion_app_logo.png" height="40px" style="margin-right: 20px" alt="Notion logo"/>
+    <img src="imgs/WebUntis-Logo.png" width="auto" height="40px" alt="WebUntis logo"/>
 </p>
 
 # Notion-WebUntis
@@ -65,7 +65,7 @@ Unfortunately I can't provide an example of the command line interface at the mo
 I will add one as soon as I have the chance to.
 ### 5.3 Example screenshots of the Notion page:
 The Notion database with the timetable. Format: Teacher, Subject, Room
-<img src="imgs/screenshot_timetable.png" width="auto" height="500px"/>
-<img src="imgs/screenshot_settings.png" width="auto" height="200px"/>
+<img src="imgs/screenshot_timetable.png" width="auto" height="500px" alt="Example Screenshot"/>
+<img src="imgs/screenshot_settings.png" width="auto" height="200px" alt="Example Screenshot (Settings)"/>
 
 The available settings that are changeable directly in Notion
